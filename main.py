@@ -50,7 +50,7 @@ class InfosSpider(scrapy.Spider):
         results_count = self.get_search_count()
         check_value = ''
         successive_empty_table = 0
-        for index in range(2232,2233):
+        for index in range(1,results_count+1):
             self.refresh(response) if index % self.refresh_count ==0 else None # refresh the browser after 500 scraped items to not get out of memory problem
             try :
                 self.select_search_result(index,check_value)
@@ -135,9 +135,9 @@ class InfosSpider(scrapy.Spider):
             '//table[@id="MainContent_grdPrevLics"]'
             '/tbody/tr[position()>1 and descendant::table]'
         ):
-            total_pages = len(self.page.query_selector_all('//a[contains(@href,"Page")]'))
+            total_pages = len(self.page.query_selector_all('//a[contains(@href,"Page") and not(contains(text(),"..."))]'))
             check_value = person_item['License History'][0]['Valid From'].strip()
-            for page_index in range(total_pages)[:-1]:
+            for page_index in range(total_pages):
                 self.click_next(page_index,person_item,check_value)
                 self.get_license_history_items_from_page(person_item)
                 check_value = person_item['License History'][(page_index+1)*5]['Valid From']
@@ -197,6 +197,7 @@ class InfosSpider(scrapy.Spider):
         person_item = self.get_primary_item(index)
         print(index,person_item['Name'])
         self.get_all_history_license(person_item)
+        self.logger.info(f'{person_item['Name']},{len(person_item['License History'])}')
         self.get_discipline_items(person_item)
         return person_item  
     
