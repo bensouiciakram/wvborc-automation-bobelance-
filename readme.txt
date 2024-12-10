@@ -7,3 +7,4 @@ on the root path of the project
 2- change the value of the executable (line 203) into the path of the executable of your executable 
 in most case it'll be "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe" in windows or "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe" in linux 
 
+3- make sure all chrome instance is not opened before running the script
