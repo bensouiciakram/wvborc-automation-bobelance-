@@ -24,7 +24,7 @@ class InfosSpider(scrapy.Spider):
         self.executable = executable 
         self.playwright = sync_playwright().start()
         self.start_chrome()
-        sleep(1)
+        sleep(3)
         self.browser = self.playwright.chromium.connect_over_cdp("http://127.0.0.1:9222")
         self.context = self.browser.contexts[0]
         self.page = self.context.new_page()
@@ -220,7 +220,8 @@ class InfosSpider(scrapy.Spider):
 
 if __name__ == '__main__': 
     first_name = '%'
-    executable = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    # executable = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe" # this is the executable in windows 
+    executable = '/usr/bin/google-chrome'
     process = CrawlerProcess(
         {
             'FEEDS' : {
