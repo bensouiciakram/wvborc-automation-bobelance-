@@ -138,7 +138,10 @@ class InfosSpider(scrapy.Spider):
             total_pages = len(self.page.query_selector_all('//a[contains(@href,"Page") and not(contains(text(),"..."))]'))
             check_value = person_item['License History'][0]['Valid From'].strip()
             for page_index in range(total_pages):
-                self.click_next(page_index,person_item,check_value)
+                try :
+                    self.click_next(page_index,person_item,check_value)
+                except IndexError:
+                    continue 
                 self.get_license_history_items_from_page(person_item)
                 check_value = person_item['License History'][(page_index+1)*5]['Valid From']
 
@@ -220,8 +223,8 @@ class InfosSpider(scrapy.Spider):
 
 if __name__ == '__main__': 
     first_name = '%'
-    # executable = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe" # this is the executable in windows 
-    executable = '/usr/bin/google-chrome'
+    executable = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe" # this is the executable in windows 
+    # executable = '/usr/bin/google-chrome'
     process = CrawlerProcess(
         {
             'FEEDS' : {
